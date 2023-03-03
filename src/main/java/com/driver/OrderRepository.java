@@ -110,6 +110,7 @@ public class OrderRepository {
         for(String order:listOfOrders){
             delivery_partners.remove(order);//removed from delivery_partners hashmap
         }
+        partners.get(partnerId).setNumberOfOrders(partnerOrderDb.size());
     }
 
     public void deleteOrderById(String orderId) {
