@@ -24,15 +24,16 @@ public class OrderRepository {
     public void addOrdersToPartners(String o_id,String p_id){
         if(orders.containsKey(o_id) && partners.containsKey(p_id)) {
             delivery_partners.put(o_id,p_id);
+
             List<String> currentOrders = new ArrayList<>();
+
             if(partnerOrderDb.containsKey(p_id))
                 currentOrders = partnerOrderDb.get(p_id);
 
-            currentOrders.add(p_id);
-            partnerOrderDb.put(o_id,currentOrders);
+            currentOrders.add(o_id);
+            partnerOrderDb.put(p_id,currentOrders);
 
-            DeliveryPartner dp = new DeliveryPartner(p_id);
-            dp.setNumberOfOrders(currentOrders.size());
+            partners.get(p_id).setNumberOfOrders(currentOrders.size());
         }
 
     }
@@ -68,10 +69,12 @@ public class OrderRepository {
 
     public List<String> getOrdersByPartnerId(String partnerId) {
         List<String> ans = new ArrayList<>();
-        if(delivery_partners.containsKey(partnerId)){
+
+        if(partnerOrderDb.containsKey(partnerId)){
             ans = partnerOrderDb.get(partnerId);
             return ans;
         }
+
         return ans;
     }
 
