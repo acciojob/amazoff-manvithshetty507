@@ -53,10 +53,11 @@ public class OrderRepository {
     }
 
     public Integer getOrderCountByPartnerId(String partnerId) {
-        if(partnerOrderDb.containsKey(partnerId)){
-            return partnerOrderDb.get(partnerId).size();
-        }
-        return null;
+
+        if(!partnerOrderDb.containsKey(partnerId)) return null;
+
+        return partnerOrderDb.get(partnerId).size();
+
     }
 
     public List<String> getAllOrders() {
@@ -84,8 +85,9 @@ public class OrderRepository {
 
     public Integer getOrdersLeftAfterGivenTimeByPartnerId(int time,String partnerId) {
         int count = 0;
-        List<String> myOrders = partnerOrderDb.get(partnerId);
 
+        if(!partnerOrderDb.containsKey(partnerId)) return 0;
+        List<String> myOrders = partnerOrderDb.get(partnerId);
         for(String o_id:myOrders){
             if(orders.get(o_id).getDeliveryTime() > time){
                 count++;
@@ -96,6 +98,7 @@ public class OrderRepository {
 
     public int getLastDeliveryTimeByPartnerId(String partnerId) {
         int maxTime = 0;
+        if(!partnerOrderDb.containsKey(partnerId)) return 0;
         List<String> myOrders = partnerOrderDb.get(partnerId);
         for(String o_id:myOrders){
             if(orders.get(o_id).getDeliveryTime() > maxTime)
@@ -105,6 +108,8 @@ public class OrderRepository {
     }
 
     public void deletePartnerById(String partnerId) {
+
+        if(!partners.containsKey(partnerId)) return;
         partners.remove(partnerId);//removed from partners hashmap
 
         List<String> listOfOrders = partnerOrderDb.get(partnerId);
@@ -117,6 +122,8 @@ public class OrderRepository {
     }
 
     public void deleteOrderById(String orderId) {
+
+        if(!orders.containsKey(orderId)) return;
         orders.remove(orderId);
 
         String p_id = delivery_partners.get(orderId);
